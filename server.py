@@ -1,12 +1,13 @@
 from flask import Flask, request, redirect, render_template, url_for
 import pathlib, os
+from flask.helpers import send_from_directory
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
 
 VALID_EXTENSIONS = set(["jpg", "jpeg", "png", "gif"])
 UPLOAD_FOLDER = 'uploads'
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='frontend/build')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/', methods=['GET', 'POST'])
@@ -16,7 +17,7 @@ def upload():
         if 'file' not in request.files:
             # flash("No file found")
             print("No file found")
-            return render_template("index.html")
+            return send_from_directory(app.static_folder, 'index.html')
 
         for file in request.files.getlist("file"):
             if file and valid_file(file.filename):
@@ -27,7 +28,7 @@ def upload():
             else:
                 print("Invalid extension")
 
-    return render_template("index.html")
+    return send_from_directory(app.static_folder, 'index.html')
         
 def valid_file(filename):
     return '.' in filename and \
