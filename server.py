@@ -18,25 +18,17 @@ def upload():
             print("No file found")
             return render_template("index.html")
 
-        file = request.files['file']
-
-        if file.filename == '':
-            # flash('No selected file')
-            print("No selected file")
-            return render_template("index.html")
-
-        print("File found")
-
-        if file and valid_extension(file.filename):
-            print("Valid filename!")
-            filename = secure_filename(file.filename)
-            print("Secure filename:", filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        else:
-            print("Invalid extension")
+        for file in request.files.getlist("file"):
+            if file and valid_file(file.filename):
+                print("Valid filename!")
+                filename = secure_filename(file.filename)
+                print("Secure filename:", filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            else:
+                print("Invalid extension")
 
     return render_template("index.html")
         
-def valid_extension(filename):
+def valid_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in VALID_EXTENSIONS
