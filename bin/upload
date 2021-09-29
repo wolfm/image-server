@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <image path>"
+    exit
+fi
+
+curl -F "file=@$1" localhost:5000/upload > /dev/null
+echo
