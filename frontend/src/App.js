@@ -5,9 +5,14 @@ function App() {
    
   const photos = [
     {
-      src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
+      src: "http://localhost:5000/photos/grapes.jpg",
       width: 4,
       height: 3
+    },
+    {
+      src: "http://localhost:5000/photos/abstract_crop.jpg",
+      width: 1,
+      height: 1
     },
     {
       src: "https://source.unsplash.com/Dm-qxdynoEc/800x799",
