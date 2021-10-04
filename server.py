@@ -1,7 +1,6 @@
-from flask import Flask, request, redirect, render_template, url_for
-import pathlib, os
+from flask import Flask, request
+import os
 from flask.helpers import send_from_directory, send_file
-from flask.templating import render_template
 from werkzeug.utils import secure_filename
 
 VALID_EXTENSIONS = set(["jpg", "jpeg", "png", "gif"])
