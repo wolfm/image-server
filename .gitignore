@@ -1,4 +1,11 @@
-.vscode
-__pycache__
-
+# Uploads folder
 uploads
+
+# VsCode
+.vscode
+
+# Python 3
+__pycache__/
+env/
+.env
+env.bak/
