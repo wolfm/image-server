@@ -6,17 +6,17 @@ from werkzeug.utils import secure_filename
 VALID_EXTENSIONS = set(["jpg", "jpeg", "png", "gif"])
 UPLOAD_FOLDER = 'uploads'
 
-app = Flask(__name__, static_url_path='', static_folder='frontend/build')
+app = Flask(__name__, static_url_path='', static_folder='../client/build')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def upload():
     if request.method == 'POST':
         # Check if the post request has a file part
         if 'file' not in request.files:
             # flash("No file found")
             print("No file found")
-            return send_from_directory(app.static_folder, 'index.html')
+            return 404
 
         for file in request.files.getlist("file"):
             if file and valid_file(file.filename):
@@ -27,7 +27,7 @@ def upload():
             else:
                 print("Invalid extension")
 
-    return send_from_directory(app.static_folder, 'index.html')
+    return 404
 
 # Return json list containing photos and URLs
 # @app.route('/photos', methods=['GET'])
