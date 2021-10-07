@@ -1,6 +1,6 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
 import os
-from flask.helpers import send_from_directory, send_file
+from flask.helpers import send_file
 from werkzeug.utils import secure_filename
 
 VALID_EXTENSIONS = set(["jpg", "jpeg", "png", "gif"])
@@ -12,22 +12,20 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/', methods=['POST'])
 def upload():
     if request.method == 'POST':
+
         # Check if the post request has a file part
-        if 'file' not in request.files:
-            # flash("No file found")
-            print("No file found")
-            return 404
+        if 'file'  in request.files:
 
-        for file in request.files.getlist("file"):
-            if file and valid_file(file.filename):
-                print("Valid filename!")
-                filename = secure_filename(file.filename)
-                print("Secure filename:", filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            else:
-                print("Invalid extension")
+            # For each received file
+            for file in request.files.getlist("file"):
+                if file and valid_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                else:
+                    return "Invalid file extension", 415 # Unsupported media type
 
-    return 404
+    return redirect(request.url)
+
 
 # Return json list containing photos and URLs
 # @app.route('/photos', methods=['GET'])
@@ -41,8 +39,8 @@ def getPhoto(filename):
     path = os.path.join('uploads', filename)
 
     if not os.path.exists(path):
-        print("File not found!")
-        return 404
+        
+        return f"File at '{path}' not found!", 404
     
     return send_file(path)
         
