@@ -1,0 +1,20 @@
+// Custom userInterval hook from https://www.30secondsofcode.org/react/s/use-interval
+import React from 'react';
+
+export const useInterval = (callback, delay) => {
+    const savedCallback = React.useRef();
+  
+    React.useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+  
+    React.useEffect(() => {
+      const tick = () => {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  };

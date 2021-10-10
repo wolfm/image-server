@@ -1,8 +1,10 @@
 import Gallery from 'react-photo-gallery';
-import './App.css';
 import {useDropzone} from 'react-dropzone';
-import { useCallback, React, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useInterval } from './interval-hook.js'
+
+import './App.css';
 
 function App() {
 
@@ -17,6 +19,16 @@ function App() {
     .catch(error => console.log(error));
   }, []);
 
+  // Poll for new images
+  useInterval(() => {
+    axios.get("/photos", {})
+    .then( res => {
+      setPhotos(res.data);
+    })
+    .catch(error => console.log(error));
+  }, 2000);
+
+  // On new set of files dropped in
   const onDrop = useCallback(acceptedFiles => {
     const data = new FormData();
 
