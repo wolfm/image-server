@@ -5,5 +5,5 @@ if [ $# -ne 1 ]; then
     exit
 fi
 
-curl -F "file=@$1" localhost:5000 > /dev/null
+curl -F "file=@$1" localhost:5000/upload #> /dev/null
 echo
