@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, redirect
-import os
+import os.path
 from flask.helpers import send_file
 from werkzeug.utils import secure_filename
 from PIL import Image
@@ -17,13 +17,18 @@ def upload():
         # Check if the post request has a file part
         if 'file' in request.files:
 
+            return_code = 200
+
             # For each received file
             for file in request.files.getlist("file"):
                 if file and valid_file(file.filename):
 
-                    # Save file
                     filename = secure_filename(file.filename)
                     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+                    # If file exists, ignore
+                    if os.path.exists(filepath): continue
+
                     file.save(filepath)
 
                     # Get image properties
@@ -37,9 +42,13 @@ def upload():
                         'height': height
                     })
                 else:
-                    return "Invalid file extension", 415 # Unsupported media type
+                    return_code = 415 # Unsupported media type
 
-    return jsonify(photos), 200
+            if return_code == 415:
+                return "Invalid file extension", 415 # Unsupported media type
+            
+
+    return jsonify(photos), return_code
 
 
 # Return json list containing photos and URLs
