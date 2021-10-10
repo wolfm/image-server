@@ -14,12 +14,16 @@ function App() {
     .then( res => {
       setPhotos(res.data);
     })
+    .catch(error => console.log(error));
   }, []);
 
   const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles);
     const data = new FormData();
-    data.append('file', acceptedFiles[0]);
+
+    // Add each file to form data
+    acceptedFiles.forEach((file) => data.append('file', file));
+    
+    // Post all files
     axios.post("/upload", data, {})
       .then(res => {
         setPhotos(res.data);
@@ -29,23 +33,11 @@ function App() {
 
   const {getRootProps, getInputProps} = useDropzone({onDrop, noClick: true})
 
-  /*
-  const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-    disabled: true
-  });
-
-  const files = acceptedFiles.map(file => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
-  */
-
   return (
     <div className="App">
       <div {...getRootProps()}>
         {
-          photos.length === 0 && <p>Drop the files here ... </p>
+          photos.length === 0 && <p>No photos in this gallery yet! Drop them here... </p>
         }
         <input {...getInputProps()}/>
         <Gallery photos={photos} />
