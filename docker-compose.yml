@@ -2,6 +2,7 @@ version: "3"
 services:
   frontend:
     container_name: frontend
+    image: mjw0lf/is-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -12,6 +13,7 @@ services:
   backend:
     restart: always
     container_name: backend
+    image: mjw0lf/is-server
     build:
       context: ./server
       dockerfile: Dockerfile
