@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, request, jsonify
 import os
 from flask.helpers import send_file
 from werkzeug.utils import secure_filename
@@ -8,7 +8,7 @@ VALID_EXTENSIONS = set(["jpg", "jpeg", "png", "gif", "webp"])
 UPLOAD_FOLDER = 'uploads'
 
 
-app = Flask(__name__, static_url_path='', static_folder='../client/build')
+app = Flask(__name__, static_url_path='')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 photos = []
