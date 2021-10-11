@@ -24,7 +24,7 @@ def initPhotos():
         add_photo_to_state(filename)
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/api/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
 
@@ -57,12 +57,12 @@ def upload():
 
 
 # Return json list containing photos and URLs
-@app.route('/photos', methods=['GET'])
+@app.route('/api/photos', methods=['GET'])
 def getPhotoList():
     return jsonify(photos), 200
 
 # Return photo data to client
-@app.route('/photos/<filename>', methods=['GET'])
+@app.route('/api/photos/<filename>', methods=['GET'])
 def getPhoto(filename):
 
     path = os.path.join('uploads', filename)
@@ -71,7 +71,7 @@ def getPhoto(filename):
         
         return f"File at '{path}' not found!", 404
     
-    return send_file(path)
+    return send_file(path), 200
 
 
 ### HELPER FUNCTIONS ###
@@ -93,7 +93,7 @@ def add_photo_to_state(filename):
 
     # Update server state
     photos.append({
-        'src': os.path.join('photos', filename), #TODO make photos part of config, not hardcoded
+        'src': os.path.join('/api/photos', filename), #TODO make photos part of config, not hardcoded
         'width': width,
         'height': height
     })

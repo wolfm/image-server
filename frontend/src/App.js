@@ -12,7 +12,7 @@ function App() {
 
   // Get  photos on first render
   useEffect(() => { 
-    axios.get("/photos", {})
+    axios.get("/api/photos", {})
     .then( res => {
       setPhotos(res.data);
     })
@@ -21,7 +21,7 @@ function App() {
 
   // Poll for new images
   useInterval(() => {
-    axios.get("/photos", {})
+    axios.get("/api/photos", {})
     .then( res => {
       setPhotos(res.data);
     })
@@ -36,7 +36,7 @@ function App() {
     acceptedFiles.forEach((file) => data.append('file', file));
     
     // Post all files
-    axios.post("/upload", data, {})
+    axios.post("/api/upload", data, {})
       .then(res => {
         setPhotos(res.data);
       })
