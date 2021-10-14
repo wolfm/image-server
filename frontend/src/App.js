@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useInterval } from './interval-hook.js'
 
 import './App.css';
+import PrimarySearchAppBar from './Header';
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
 
   return (
     <div className="App">
+      <PrimarySearchAppBar/>
       <div {...getRootProps()}>
         {
           photos.length === 0 && <p>No photos in this gallery yet! Drop them here... </p>
